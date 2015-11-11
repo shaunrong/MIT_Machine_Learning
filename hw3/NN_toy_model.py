@@ -10,20 +10,20 @@ __maintainer__ = 'Shaun Rong'
 __email__ = 'rongzq08@gmail.com'
 
 
-train = scipy.io.loadmat('data/toy_multiclass_2_train.csv')['toy_data']
+train = scipy.io.loadmat('data/toy_multiclass_1_train.csv')['toy_data']
 X_train = train[:, 0:-1]
 Y_train = train[:, -1:] - 1
-val = scipy.io.loadmat('data/toy_multiclass_2_validate.csv')['toy_data']
+val = scipy.io.loadmat('data/toy_multiclass_1_validate.csv')['toy_data']
 X_val = val[:, 0:-1]
 Y_val = val[:, -1:] - 1
-test = scipy.io.loadmat('data/toy_multiclass_2_test.csv')['toy_data']
+test = scipy.io.loadmat('data/toy_multiclass_1_test.csv')['toy_data']
 X_test = test[:, 0:-1]
 Y_test = test[:, -1:] - 1
 
 lrate = 0.5
 lam = 0.01
-#hdims = np.arange(2, 50, 2)
-hdims = [36]
+#hdims = np.arange(2, 20, 2)
+hdims = [10]
 
 
 def error_rate(X_val, Y_val, nn):
@@ -41,7 +41,7 @@ for hdim in hdims:
     for it in range(20):
         LL = 0
         for i in range(X_train.shape[0]):
-            pr = nn.update(X_train[i], Y_train[i, 0], lrate)
+            pr = nn.update_stochastic(X_train[i], Y_train[i, 0], lrate)
             LL += pr
             LL /= float(X_train.shape[0])
 
@@ -56,8 +56,8 @@ for hdim in hdims:
 
 
 pl.plot(hdims, er, 'g^-')
-pl.title('Model Selection on Neural Network, toy_multiclass_2')
+pl.title('Model Selection on Neural Network, toy_multiclass_1')
 pl.xlabel('Hidden Layer Units')
 pl.ylabel('Error Rate on Validate Dataset')
-pl.ylim([0.0, 1.2])
+pl.ylim([0.0, 0.02])
 pl.show()
